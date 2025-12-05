@@ -788,9 +788,7 @@
                     <button class="control-btn" id="foodBtn" title="Show Restaurants">
                         🍔 Food
                     </button>
-                    <button class="control-btn" id="animateBtn" title="Animate Route">
-                        ▶️ Animate
-                    </button>
+
                     <select class="control-select" id="themeSelect">
                         <option value="standard">Standard</option>
                         <option value="night">Night Mode</option>
@@ -1341,54 +1339,7 @@
             });
         }
 
-        // Animate route
-        document.getElementById('animateBtn').addEventListener('click', function() {
-            if (animationInterval) {
-                clearInterval(animationInterval);
-                animationInterval = null;
-                if (animationMarker) animationMarker.setMap(null);
-                this.classList.remove('active');
-                this.innerHTML = '▶️ Animate';
-            } else {
-                animateRoute();
-                this.classList.add('active');
-                this.innerHTML = '⏸️ Stop';
-            }
-        });
 
-        // Animate marker along route
-        function animateRoute() {
-            if (!allRoutes || allRoutes.length === 0 || !allRoutes[currentRouteIndex]) return;
-            
-            const route = allRoutes[currentRouteIndex];
-            const path = route.overview_path;
-            let step = 0;
-            
-            animationMarker = new google.maps.Marker({
-                position: path[0],
-                map: currentMap,
-                icon: {
-                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-                    scale: 5,
-                    fillColor: '#FF6B9D',
-                    fillOpacity: 1,
-                    strokeColor: '#ffffff',
-                    strokeWeight: 2
-                }
-            });
-            
-            animationInterval = setInterval(() => {
-                if (step >= path.length) {
-                    clearInterval(animationInterval);
-                    animationInterval = null;
-                    document.getElementById('animateBtn').classList.remove('active');
-                    document.getElementById('animateBtn').innerHTML = '▶️ Animate';
-                    return;
-                }
-                animationMarker.setPosition(path[step]);
-                step++;
-            }, 50);
-        }
 
         // Change map theme
         document.getElementById('themeSelect').addEventListener('change', function() {
