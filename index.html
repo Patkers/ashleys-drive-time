@@ -15,6 +15,72 @@
             --shadow: rgba(196, 69, 105, 0.2);
         }
 
+        /* Color Themes */
+        body.theme-pink {
+            --primary: #FF6B9D;
+            --secondary: #C44569;
+            --accent: #FFC371;
+            --light: #FFF5F7;
+            --shadow: rgba(196, 69, 105, 0.2);
+        }
+
+        body.theme-blue {
+            --primary: #4A90E2;
+            --secondary: #2E5C8A;
+            --accent: #7EC8E3;
+            --light: #F0F8FF;
+            --shadow: rgba(74, 144, 226, 0.2);
+        }
+
+        body.theme-purple {
+            --primary: #9B59B6;
+            --secondary: #6C3483;
+            --accent: #BB8FCE;
+            --light: #F4ECF7;
+            --shadow: rgba(155, 89, 182, 0.2);
+        }
+
+        body.theme-green {
+            --primary: #27AE60;
+            --secondary: #1E8449;
+            --accent: #58D68D;
+            --light: #E8F8F5;
+            --shadow: rgba(39, 174, 96, 0.2);
+        }
+
+        body.theme-orange {
+            --primary: #E67E22;
+            --secondary: #CA6F1E;
+            --accent: #F39C12;
+            --light: #FEF5E7;
+            --shadow: rgba(230, 126, 34, 0.2);
+        }
+
+        body.theme-red {
+            --primary: #E74C3C;
+            --secondary: #C0392B;
+            --accent: #EC7063;
+            --light: #FDEDEC;
+            --shadow: rgba(231, 76, 60, 0.2);
+        }
+
+        body.theme-teal {
+            --primary: #16A085;
+            --secondary: #138D75;
+            --accent: #48C9B0;
+            --light: #E8F8F5;
+            --shadow: rgba(22, 160, 133, 0.2);
+        }
+
+        body.theme-indigo {
+            --primary: #5D4E99;
+            --secondary: #3F3166;
+            --accent: #8E7CC3;
+            --light: #F4F1FA;
+            --shadow: rgba(93, 78, 153, 0.2);
+        }
+
+
         * {
             margin: 0;
             padding: 0;
@@ -326,6 +392,44 @@
             font-size: 1.5rem;
             color: var(--dark);
             font-weight: 700;
+        }
+
+        /* Side-by-side comparison for departure times */
+        .time-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 107, 157, 0.2);
+        }
+
+        .time-comparison-item {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.05) 0%, rgba(196, 69, 105, 0.05) 100%);
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .time-comparison-item.recommended {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, rgba(196, 69, 105, 0.1) 100%);
+        }
+
+        .time-comparison .result-label {
+            font-size: 0.75rem;
+        }
+
+        .time-comparison .result-value {
+            font-size: 1.3rem;
+        }
+
+        @media (max-width: 500px) {
+            .time-comparison {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
         }
 
         .arrival-time {
@@ -695,6 +799,140 @@
             }
         }
     
+        /* Floating Theme Button */
+        .theme-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        /* Theme Modal */
+        .theme-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-modal.show {
+            display: flex;
+        }
+
+        .theme-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .theme-modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .theme-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .theme-option.active {
+            border-color: var(--dark);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .theme-option.active::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .theme-pink { background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%); }
+        .theme-blue { background: linear-gradient(135deg, #4A90E2 0%, #2E5C8A 100%); }
+        .theme-purple { background: linear-gradient(135deg, #9B59B6 0%, #6C3483 100%); }
+        .theme-green { background: linear-gradient(135deg, #27AE60 0%, #1E8449 100%); }
+        .theme-orange { background: linear-gradient(135deg, #E67E22 0%, #CA6F1E 100%); }
+        .theme-red { background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%); }
+        .theme-teal { background: linear-gradient(135deg, #16A085 0%, #138D75 100%); }
+        .theme-indigo { background: linear-gradient(135deg, #5D4E99 0%, #3F3166 100%); }
+
+        .theme-label {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-top: 5px;
+        }
+
+        .theme-close {
+            width: 100%;
+            padding: 15px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .theme-close:hover {
+            background: #e0e0e0;
+        }
+    
         /* Hide unwanted buttons and non-working features */
         button#gasBtn,
         button#foodBtn,
@@ -729,6 +967,51 @@
     </style>
 </head>
 <body>
+    <!-- Floating Theme Button -->
+    <button class="theme-button" id="themeButton" title="Change color theme">🎨</button>
+
+    <!-- Theme Modal -->
+    <div class="theme-modal" id="themeModal">
+        <div class="theme-modal-content">
+            <div class="theme-modal-title">Choose Your Color</div>
+            <div class="theme-grid">
+                <div>
+                    <div class="theme-option theme-pink" data-theme="pink"></div>
+                    <div class="theme-label">Pink</div>
+                </div>
+                <div>
+                    <div class="theme-option theme-blue" data-theme="blue"></div>
+                    <div class="theme-label">Blue</div>
+                </div>
+                <div>
+                    <div class="theme-option theme-purple" data-theme="purple"></div>
+                    <div class="theme-label">Purple</div>
+                </div>
+                <div>
+                    <div class="theme-option theme-green" data-theme="green"></div>
+                    <div class="theme-label">Green</div>
+                </div>
+                <div>
+                    <div class="theme-option theme-orange" data-theme="orange"></div>
+                    <div class="theme-label">Orange</div>
+                </div>
+                <div>
+                    <div class="theme-option theme-red" data-theme="red"></div>
+                    <div class="theme-label">Red</div>
+                </div>
+                <div>
+                    <div class="theme-option theme-teal" data-theme="teal"></div>
+                    <div class="theme-label">Teal</div>
+                </div>
+                <div>
+                    <div class="theme-option theme-indigo" data-theme="indigo"></div>
+                    <div class="theme-label">Indigo</div>
+                </div>
+            </div>
+            <button class="theme-close" id="closeThemeModal">Done</button>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>My Drive Time</h1>
@@ -750,7 +1033,7 @@
                     <input 
                         type="text" 
                         id="origin" 
-                        placeholder="1213 Deerfield Ave, Menasha WI"
+                        placeholder="123 Deerfield Ave"
                         required
                     >
                     <button type="button" class="location-btn" id="useCurrentLocation" title="Use my current location">
@@ -764,7 +1047,7 @@
                 <input 
                     type="text" 
                     id="destination" 
-                    placeholder="1234 Main Street, Oshkosh WI"
+                    placeholder="234 Main Street"
                     required
                 >
             </div>
@@ -805,14 +1088,37 @@
         <div class="error" id="error"></div>
 
         <div class="results" id="results">
-            <div class="result-item">
+            <!-- Side-by-side comparison for departure times (only shown for Arrive By mode) -->
+            <div class="time-comparison" id="timeComparison" style="display: none;">
+                <div class="time-comparison-item">
+                    <div class="result-label">Latest Departure</div>
+                    <div class="result-value" id="latestDeparture"></div>
+                </div>
+                <div class="time-comparison-item recommended">
+                    <div class="result-label">⭐ Recommended Departure</div>
+                    <div class="result-value" id="recommendedDeparture" style="color: var(--primary);"></div>
+                </div>
+            </div>
+
+            <!-- Standard departure/current time (shown for Leave Now/Leave At) -->
+            <div class="result-item" id="standardTimeItem">
                 <div class="result-label">Current Time</div>
                 <div class="result-value" id="currentTime"></div>
             </div>
 
             <div class="result-item">
-                <div class="result-label">Travel Time</div>
+                <div class="result-label">Travel Time (Current Traffic)</div>
                 <div class="result-value" id="duration"></div>
+            </div>
+
+            <div class="result-item" id="historicalItem" style="display: none;">
+                <div class="result-label">Typical Travel Time</div>
+                <div class="result-value" id="historicalDuration"></div>
+            </div>
+
+            <div class="result-item" id="bufferItem" style="display: none;">
+                <div class="result-label">Safety Buffer Time</div>
+                <div class="result-value" id="bufferTime" style="color: var(--accent); font-weight: 700;"></div>
             </div>
 
             <div class="result-item">
@@ -820,9 +1126,22 @@
                 <div class="result-value" id="distance"></div>
             </div>
 
-            <div class="result-item">
+            <!-- Side-by-side arrival comparison (for Leave Now/Leave At) -->
+            <div class="time-comparison" id="arrivalComparison" style="display: none;">
+                <div class="time-comparison-item">
+                    <div class="result-label">Estimated Arrival</div>
+                    <div class="arrival-time" id="arrivalTime" style="font-size: 2rem;"></div>
+                </div>
+                <div class="time-comparison-item recommended">
+                    <div class="result-label">⭐ Safe Arrival Time</div>
+                    <div class="arrival-time" id="safeArrival" style="font-size: 2rem;"></div>
+                </div>
+            </div>
+
+            <!-- Single Estimated Arrival (for Arrive By mode) -->
+            <div class="result-item" id="singleArrivalItem">
                 <div class="result-label">Estimated Arrival</div>
-                <div class="arrival-time" id="arrivalTime"></div>
+                <div class="arrival-time" id="arrivalTimeSingle"></div>
             </div>
 
             <div class="map-container" id="mapContainer">
@@ -1089,9 +1408,8 @@
                     arrivalTargetTime.setDate(arrivalTargetTime.getDate() + 1);
                 }
                 
-                // For the API call, we still use current time as departure
-                // We'll calculate backwards later
-                departureDate = new Date();
+                // Make initial estimate: assume 30 minutes travel time to start
+                departureDate = new Date(arrivalTargetTime.getTime() - (30 * 60 * 1000));
             }
 
             try {
@@ -1133,17 +1451,44 @@
                             console.log('Result Status:', result.status);
                             
                             if (result.status === 'OK') {
-                                // Get travel duration
-                                const durationInSeconds = result.duration_in_traffic 
+                                // Get both duration types
+                                const durationInSecondsTraffic = result.duration_in_traffic 
                                     ? result.duration_in_traffic.value 
                                     : result.duration.value;
+                                const durationInSecondsHistorical = result.duration.value;
+                                
+                                // Choose which duration to use based on mode
+                                let primaryDuration;
+                                if (departureType === 'arrive') {
+                                    // Arrive By: Use historical (we don't know exact departure time yet)
+                                    primaryDuration = durationInSecondsHistorical;
+                                } else if (departureType === 'later') {
+                                    // Leave At: Use traffic prediction for that future time
+                                    primaryDuration = durationInSecondsTraffic;
+                                } else {
+                                    // Leave Now: Use current traffic
+                                    primaryDuration = durationInSecondsTraffic;
+                                }
                                 
                                 let departureTimeStr, arrivalTimeStr, displayDepartureDate, displayArrivalDate;
+                                let recommendedDepartureDate, recommendedDepartureStr;
                                 
                                 if (departureType === 'arrive' && arrivalTargetTime) {
-                                    // Calculate when to leave to arrive by target time
+                                    // Arrive By mode: Calculate backwards using historical time
                                     displayArrivalDate = arrivalTargetTime;
-                                    displayDepartureDate = new Date(arrivalTargetTime.getTime() - (durationInSeconds * 1000));
+                                    
+                                    // Round historical time to match what we display
+                                    // This ensures Latest Departure matches the displayed travel time
+                                    const historicalMinutes = Math.round(durationInSecondsHistorical / 60);
+                                    const roundedHistoricalSeconds = historicalMinutes * 60;
+                                    
+                                    // Use rounded duration for BOTH latest and recommended departure
+                                    displayDepartureDate = new Date(arrivalTargetTime.getTime() - (roundedHistoricalSeconds * 1000));
+                                    
+                                    // Calculate recommended departure with buffer (historical + 10%)
+                                    const bufferTime = Math.ceil(roundedHistoricalSeconds * 0.10);
+                                    const totalTimeWithBuffer = roundedHistoricalSeconds + bufferTime;
+                                    recommendedDepartureDate = new Date(arrivalTargetTime.getTime() - (totalTimeWithBuffer * 1000));
                                     
                                     departureTimeStr = displayDepartureDate.toLocaleTimeString('en-US', { 
                                         hour: 'numeric', 
@@ -1151,14 +1496,23 @@
                                         hour12: true 
                                     });
                                     arrivalTimeStr = displayArrivalDate.toLocaleTimeString('en-US', { 
+                                        hour: 'numeric', 
+                                        minute: '2-digit',
+                                        hour12: true 
+                                    });
+                                    recommendedDepartureStr = recommendedDepartureDate.toLocaleTimeString('en-US', { 
                                         hour: 'numeric', 
                                         minute: '2-digit',
                                         hour12: true 
                                     });
                                 } else {
-                                    // Normal calculation
+                                    // Leave Now or Leave At: Use traffic-based duration
+                                    // Round to match what we display to avoid off-by-one errors
+                                    const primaryMinutes = Math.round(primaryDuration / 60);
+                                    const roundedPrimarySeconds = primaryMinutes * 60;
+                                    
                                     displayDepartureDate = departureDate;
-                                    displayArrivalDate = new Date(departureDate.getTime() + (durationInSeconds * 1000));
+                                    displayArrivalDate = new Date(departureDate.getTime() + (roundedPrimarySeconds * 1000));
                                     
                                     departureTimeStr = displayDepartureDate.toLocaleTimeString('en-US', { 
                                         hour: 'numeric', 
@@ -1170,22 +1524,103 @@
                                         minute: '2-digit',
                                         hour12: true 
                                     });
+                                    
+                                    // Update primaryDuration to use rounded value for consistency
+                                    primaryDuration = roundedPrimarySeconds;
                                 }
 
                                 // Display results
-                                document.getElementById('currentTime').textContent = departureTimeStr;
-                                
-                                if (departureType === 'now') {
-                                    document.querySelector('.result-item:first-child .result-label').textContent = 'Current Time';
-                                } else if (departureType === 'arrive') {
-                                    document.querySelector('.result-item:first-child .result-label').textContent = 'You Must Leave At';
+                                if (departureType === 'arrive') {
+                                    // Arrive By mode: Show departure comparison at top
+                                    document.getElementById('timeComparison').style.display = 'grid';
+                                    document.getElementById('standardTimeItem').style.display = 'none';
+                                    document.getElementById('arrivalComparison').style.display = 'none';
+                                    document.getElementById('singleArrivalItem').style.display = 'block';
+                                    
+                                    document.querySelector('#timeComparison .time-comparison-item:first-child .result-label').textContent = 'Latest Departure';
+                                    document.querySelector('#timeComparison .time-comparison-item:last-child .result-label').textContent = '⭐ Recommended Departure';
+                                    
+                                    document.getElementById('latestDeparture').textContent = departureTimeStr;
+                                    document.getElementById('recommendedDeparture').textContent = recommendedDepartureStr;
+                                    
+                                    // Show single arrival time at bottom
+                                    document.getElementById('arrivalTimeSingle').textContent = arrivalTimeStr;
                                 } else {
-                                    document.querySelector('.result-item:first-child .result-label').textContent = 'Departure Time';
+                                    // Leave Now/Leave At: Show departure at top, arrival comparison at bottom
+                                    document.getElementById('timeComparison').style.display = 'none';
+                                    document.getElementById('standardTimeItem').style.display = 'block';
+                                    document.getElementById('arrivalComparison').style.display = 'grid';
+                                    document.getElementById('singleArrivalItem').style.display = 'none';
+                                    
+                                    // Calculate safe arrival time using primary duration + buffer
+                                    const bufferSeconds = Math.ceil(primaryDuration * 0.10);
+                                    const totalTimeWithBuffer = primaryDuration + bufferSeconds;
+                                    const safeArrivalDate = new Date(displayDepartureDate.getTime() + (totalTimeWithBuffer * 1000));
+                                    const safeArrivalStr = safeArrivalDate.toLocaleTimeString('en-US', { 
+                                        hour: 'numeric', 
+                                        minute: '2-digit',
+                                        hour12: true 
+                                    });
+                                    
+                                    // Show departure time at top
+                                    document.getElementById('currentTime').textContent = departureTimeStr;
+                                    if (departureType === 'now') {
+                                        document.querySelector('#standardTimeItem .result-label').textContent = 'Current Time';
+                                    } else {
+                                        document.querySelector('#standardTimeItem .result-label').textContent = 'Departure Time';
+                                    }
+                                    
+                                    // Show arrival comparison at bottom
+                                    document.getElementById('arrivalTime').textContent = arrivalTimeStr;
+                                    document.getElementById('safeArrival').textContent = safeArrivalStr;
                                 }
                                 
-                                document.getElementById('duration').textContent = result.duration_in_traffic 
-                                    ? result.duration_in_traffic.text 
-                                    : result.duration.text;
+                                // Format both times consistently (hours and minutes)
+                                const trafficHours = Math.floor(durationInSecondsTraffic / 3600);
+                                const trafficMinutes = Math.round((durationInSecondsTraffic % 3600) / 60);
+                                const trafficTimeFormatted = trafficHours > 0 
+                                    ? `${trafficHours} hour ${trafficMinutes} mins`
+                                    : `${trafficMinutes} mins`;
+                                
+                                const historicalHours = Math.floor(durationInSecondsHistorical / 3600);
+                                const historicalMinutes = Math.round((durationInSecondsHistorical % 3600) / 60);
+                                const historicalTimeFormatted = historicalHours > 0 
+                                    ? `${historicalHours} hour ${historicalMinutes} mins`
+                                    : `${historicalMinutes} mins`;
+                                
+                                // Show appropriate traffic label based on mode
+                                if (departureType === 'now') {
+                                    document.querySelector('#duration').parentElement.querySelector('.result-label').textContent = 'Travel Time (Current Traffic)';
+                                    document.getElementById('duration').textContent = trafficTimeFormatted;
+                                } else if (departureType === 'later') {
+                                    document.querySelector('#duration').parentElement.querySelector('.result-label').textContent = 'Travel Time (Predicted Traffic)';
+                                    document.getElementById('duration').textContent = trafficTimeFormatted;
+                                } else {
+                                    // Arrive By: show historical as primary
+                                    document.querySelector('#duration').parentElement.querySelector('.result-label').textContent = 'Travel Time (Typical)';
+                                    document.getElementById('duration').textContent = historicalTimeFormatted;
+                                }
+                                
+                                // Show the other time as comparison
+                                if (departureType === 'arrive') {
+                                    // For Arrive By, show current traffic as reference
+                                    document.querySelector('#historicalItem .result-label').textContent = 'Current Traffic (Reference)';
+                                    document.getElementById('historicalDuration').textContent = trafficTimeFormatted;
+                                } else {
+                                    // For Leave Now/Leave At, show historical as reference
+                                    document.querySelector('#historicalItem .result-label').textContent = 'Typical Travel Time';
+                                    document.getElementById('historicalDuration').textContent = historicalTimeFormatted;
+                                }
+                                document.getElementById('historicalItem').style.display = 'block';
+                                
+                                // Calculate buffer based on primary duration (10% safety buffer)
+                                const bufferSeconds = Math.ceil(primaryDuration * 0.10);
+                                const bufferMinutes = Math.round(bufferSeconds / 60);
+                                
+                                // Show buffer time (for all modes)
+                                document.getElementById('bufferTime').textContent = `${bufferMinutes} mins`;
+                                document.getElementById('bufferItem').style.display = 'block';
+                                
                                 document.getElementById('distance').textContent = result.distance.text;
                                 document.getElementById('arrivalTime').textContent = arrivalTimeStr;
 
@@ -1709,6 +2144,67 @@
         };
         
         window.addEventListener('load', populateFavoritesDropdown);
+
+        // Color theme system
+        const themeButton = document.getElementById('themeButton');
+        const themeModal = document.getElementById('themeModal');
+        const closeThemeModal = document.getElementById('closeThemeModal');
+        const themeOptions = document.querySelectorAll('.theme-option');
+        
+        // Load saved theme on page load
+        const savedTheme = localStorage.getItem('colorTheme') || 'pink';
+        document.body.classList.add(`theme-${savedTheme}`);
+        
+        // Mark active theme
+        function updateActiveTheme(theme) {
+            themeOptions.forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.theme === theme) {
+                    option.classList.add('active');
+                }
+            });
+        }
+        
+        updateActiveTheme(savedTheme);
+        
+        // Open theme modal
+        themeButton.addEventListener('click', function() {
+            themeModal.classList.add('show');
+        });
+        
+        // Close theme modal
+        closeThemeModal.addEventListener('click', function() {
+            themeModal.classList.remove('show');
+        });
+        
+        // Close when clicking outside
+        themeModal.addEventListener('click', function(e) {
+            if (e.target === themeModal) {
+                themeModal.classList.remove('show');
+            }
+        });
+        
+        // Handle theme selection
+        themeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const theme = this.dataset.theme;
+                
+                // Remove all theme classes
+                document.body.className = document.body.className
+                    .split(' ')
+                    .filter(c => !c.startsWith('theme-'))
+                    .join(' ');
+                
+                // Add new theme class
+                document.body.classList.add(`theme-${theme}`);
+                
+                // Save to localStorage
+                localStorage.setItem('colorTheme', theme);
+                
+                // Update active state
+                updateActiveTheme(theme);
+            });
+        });
 
     </script>
 </body>
