@@ -736,11 +736,15 @@
                         <input type="radio" name="departureType" value="later">
                         <span>Leave At</span>
                     </label>
+                    <label class="radio-option">
+                        <input type="radio" name="departureType" value="arrive">
+                        <span>Arrive By</span>
+                    </label>
                 </div>
             </div>
 
             <div class="form-group time-picker-group" id="timePickerGroup" style="display: none;">
-                <label for="departureTime">Select Time</label>
+                <label for="departureTime" id="timeLabel">Select Time</label>
                 <input 
                     type="time" 
                     id="departureTime"
@@ -909,10 +913,21 @@
         // Toggle time picker visibility
         departureRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
+                const timeLabel = document.getElementById('timeLabel');
                 if (e.target.value === 'later') {
                     timePickerGroup.style.display = 'block';
+                    timeLabel.textContent = 'Departure Time';
                     // Set default time to current time
                     const now = new Date();
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    document.getElementById('departureTime').value = `${hours}:${minutes}`;
+                } else if (e.target.value === 'arrive') {
+                    timePickerGroup.style.display = 'block';
+                    timeLabel.textContent = 'Arrival Time';
+                    // Set default time to current time + 1 hour
+                    const now = new Date();
+                    now.setHours(now.getHours() + 1);
                     const hours = String(now.getHours()).padStart(2, '0');
                     const minutes = String(now.getMinutes()).padStart(2, '0');
                     document.getElementById('departureTime').value = `${hours}:${minutes}`;
@@ -937,6 +952,7 @@
             // Determine departure time
             const departureType = document.querySelector('input[name="departureType"]:checked').value;
             let departureDate = new Date();
+            let arrivalTargetTime = null;
             
             if (departureType === 'later') {
                 const timeValue = document.getElementById('departureTime').value;
@@ -955,6 +971,29 @@
                 if (departureDate < new Date()) {
                     departureDate.setDate(departureDate.getDate() + 1);
                 }
+            } else if (departureType === 'arrive') {
+                const timeValue = document.getElementById('departureTime').value;
+                if (!timeValue) {
+                    error.textContent = 'Please select an arrival time';
+                    error.classList.add('show');
+                    loading.classList.remove('show');
+                    submitBtn.disabled = false;
+                    return;
+                }
+                
+                // Store the target arrival time
+                const [hours, minutes] = timeValue.split(':');
+                arrivalTargetTime = new Date();
+                arrivalTargetTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                
+                // If the time is in the past today, assume tomorrow
+                if (arrivalTargetTime < new Date()) {
+                    arrivalTargetTime.setDate(arrivalTargetTime.getDate() + 1);
+                }
+                
+                // For the API call, we still use current time as departure
+                // We'll calculate backwards later
+                departureDate = new Date();
             }
 
             try {
@@ -996,29 +1035,56 @@
                             console.log('Result Status:', result.status);
                             
                             if (result.status === 'OK') {
-                                // Display departure time
-                                const departureTimeStr = departureDate.toLocaleTimeString('en-US', { 
-                                    hour: 'numeric', 
-                                    minute: '2-digit',
-                                    hour12: true 
-                                });
-
-                                // Calculate arrival time
+                                // Get travel duration
                                 const durationInSeconds = result.duration_in_traffic 
                                     ? result.duration_in_traffic.value 
                                     : result.duration.value;
                                 
-                                const arrivalDate = new Date(departureDate.getTime() + (durationInSeconds * 1000));
-                                const arrivalTimeStr = arrivalDate.toLocaleTimeString('en-US', { 
-                                    hour: 'numeric', 
-                                    minute: '2-digit',
-                                    hour12: true 
-                                });
+                                let departureTimeStr, arrivalTimeStr, displayDepartureDate, displayArrivalDate;
+                                
+                                if (departureType === 'arrive' && arrivalTargetTime) {
+                                    // Calculate when to leave to arrive by target time
+                                    displayArrivalDate = arrivalTargetTime;
+                                    displayDepartureDate = new Date(arrivalTargetTime.getTime() - (durationInSeconds * 1000));
+                                    
+                                    departureTimeStr = displayDepartureDate.toLocaleTimeString('en-US', { 
+                                        hour: 'numeric', 
+                                        minute: '2-digit',
+                                        hour12: true 
+                                    });
+                                    arrivalTimeStr = displayArrivalDate.toLocaleTimeString('en-US', { 
+                                        hour: 'numeric', 
+                                        minute: '2-digit',
+                                        hour12: true 
+                                    });
+                                } else {
+                                    // Normal calculation
+                                    displayDepartureDate = departureDate;
+                                    displayArrivalDate = new Date(departureDate.getTime() + (durationInSeconds * 1000));
+                                    
+                                    departureTimeStr = displayDepartureDate.toLocaleTimeString('en-US', { 
+                                        hour: 'numeric', 
+                                        minute: '2-digit',
+                                        hour12: true 
+                                    });
+                                    arrivalTimeStr = displayArrivalDate.toLocaleTimeString('en-US', { 
+                                        hour: 'numeric', 
+                                        minute: '2-digit',
+                                        hour12: true 
+                                    });
+                                }
 
                                 // Display results
                                 document.getElementById('currentTime').textContent = departureTimeStr;
-                                document.querySelector('.result-item:first-child .result-label').textContent = 
-                                    departureType === 'now' ? 'Current Time' : 'Departure Time';
+                                
+                                if (departureType === 'now') {
+                                    document.querySelector('.result-item:first-child .result-label').textContent = 'Current Time';
+                                } else if (departureType === 'arrive') {
+                                    document.querySelector('.result-item:first-child .result-label').textContent = 'You Must Leave At';
+                                } else {
+                                    document.querySelector('.result-item:first-child .result-label').textContent = 'Departure Time';
+                                }
+                                
                                 document.getElementById('duration').textContent = result.duration_in_traffic 
                                     ? result.duration_in_traffic.text 
                                     : result.duration.text;
