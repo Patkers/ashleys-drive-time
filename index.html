@@ -137,6 +137,45 @@
             box-shadow: 0 5px 20px var(--shadow);
         }
 
+        .input-with-button {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-with-button input {
+            flex: 1;
+        }
+
+        .location-btn {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow);
+            min-width: 55px;
+        }
+
+        .location-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .location-btn:active {
+            transform: translateY(0);
+        }
+
+        .location-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+
         .time-options {
             display: flex;
             flex-direction: column;
@@ -707,12 +746,17 @@
 
             <div class="form-group">
                 <label for="origin">Starting Location</label>
-                <input 
-                    type="text" 
-                    id="origin" 
-                    placeholder="123 Deerfield Ave"
-                    required
-                >
+                <div class="input-with-button">
+                    <input 
+                        type="text" 
+                        id="origin" 
+                        placeholder="1213 Deerfield Ave, Menasha WI"
+                        required
+                    >
+                    <button type="button" class="location-btn" id="useCurrentLocation" title="Use my current location">
+                        📍
+                    </button>
+                </div>
             </div>
 
             <div class="form-group">
@@ -720,7 +764,7 @@
                 <input 
                     type="text" 
                     id="destination" 
-                    placeholder="234 Main Street"
+                    placeholder="1234 Main Street, Oshkosh WI"
                     required
                 >
             </div>
@@ -909,6 +953,60 @@
         const submitBtn = document.getElementById('submitBtn');
         const timePickerGroup = document.getElementById('timePickerGroup');
         const departureRadios = document.querySelectorAll('input[name="departureType"]');
+
+        // Use current location button
+        document.getElementById('useCurrentLocation').addEventListener('click', function() {
+            const btn = this;
+            const originInput = document.getElementById('origin');
+            
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = '⏳';
+            
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Use reverse geocoding to get address
+                    try {
+                        await loadGoogleMapsAPI();
+                        const geocoder = new google.maps.Geocoder();
+                        const latlng = { lat: lat, lng: lng };
+                        
+                        geocoder.geocode({ location: latlng }, (results, status) => {
+                            if (status === 'OK' && results[0]) {
+                                originInput.value = results[0].formatted_address;
+                                btn.textContent = '✅';
+                                setTimeout(() => {
+                                    btn.textContent = '📍';
+                                    btn.disabled = false;
+                                }, 1500);
+                            } else {
+                                // Fallback to lat/lng coordinates
+                                originInput.value = `${lat}, ${lng}`;
+                                btn.textContent = '📍';
+                                btn.disabled = false;
+                            }
+                        });
+                    } catch (err) {
+                        // Fallback to lat/lng coordinates
+                        originInput.value = `${lat}, ${lng}`;
+                        btn.textContent = '📍';
+                        btn.disabled = false;
+                    }
+                },
+                (err) => {
+                    alert('Unable to get your location. Please check your browser permissions.');
+                    btn.textContent = '📍';
+                    btn.disabled = false;
+                }
+            );
+        });
 
         // Toggle time picker visibility
         departureRadios.forEach(radio => {
